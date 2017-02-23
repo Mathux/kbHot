@@ -33,4 +33,4 @@
 *.su
 
 #build
-Kbots/build-mega2560
+build-mega2560
