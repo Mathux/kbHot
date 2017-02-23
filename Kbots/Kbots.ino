@@ -4,9 +4,18 @@
 #include <SoftwareSerial.h>
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-uint8_t heart[8] = {0x0, 0xa, 0x1f, 0x1f, 0xe, 0x4, 0x0};
-unsigned long previousMillis = 0;
-int mode_home = 1;
+
+unsigned long previousMillis_refresh = 0;
+unsigned long previousMillis_wait = 0;
+
+enum mode_dispo {
+  mhome,
+  mpos,
+  mbat
+};
+
+mode_dispo mode = mhome;
+
 void setup(){  
   //hacheur
   TCCR4B = TCCR4B & B11111000 | B00000001; //D6,D7,D8 ,31372.55 Hz
@@ -30,7 +39,6 @@ void setup(){
   pinMode(UI_LED1,OUTPUT);
   pinMode(UI_LED0,OUTPUT);
 
-  
   pinMode(UI_BTN_DOWN,INPUT_PULLUP);
   pinMode(UI_BTN_CENTER,INPUT_PULLUP);
   pinMode(UI_BTN_RIGHT,INPUT_PULLUP);
@@ -56,18 +64,39 @@ void setup(){
   attachInterrupt(4,change_codeur2_A,CHANGE);
   attachInterrupt(5,change_codeur2_B,CHANGE);
 
+
+  // home
+  menu_lcd();
 }
 
+int refresh = 700;
 
-void loop(){
+void loop() {
   //monitor ();
   char c; 
   while((c=Serial2.read())==-1) {
-    int wait = button();
-    unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis >= wait) {
-      previousMillis = currentMillis;
-      home ();
+    unsigned long currentMillis_refresh = millis();
+    unsigned long currentMillis_wait = millis();
+    
+    if (currentMillis_refresh - previousMillis_refresh >= refresh) {
+      previousMillis_refresh = currentMillis_refresh;
+      unsigned long currentMillis_wait = millis();
+      if (button()) {
+       previousMillis_wait = currentMillis_wait; 
+      }
+      if(mode!=mhome) {
+        menu_lcd();
+        if (currentMillis_wait - previousMillis_wait >= wait_menu()) {
+          mode = mhome;
+          menu_lcd();
+        }
+      }
+    }
+    else {
+     if (button()) {
+      previousMillis_wait = currentMillis_wait;
+      previousMillis_refresh = 0; // refresh direct
+     }      
     }
   }
   static int vit = 60;

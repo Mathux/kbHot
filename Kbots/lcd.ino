@@ -1,12 +1,9 @@
 void home () {
-  if(!mode_home) {
-    mode_home = 1;
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Kbot of power !");
-    lcd.setCursor(0, 1);
-    lcd.print("Mathis Petrovich");
-  }
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Kbot of power !");
+  lcd.setCursor(0, 1);
+  lcd.print("Mathis Petrovich");
 }
 
 void afficherM ()  {
@@ -22,20 +19,24 @@ void afficherM ()  {
   v4 = (v4*5)/1024;
   char s[20]; 
   lcd.clear();
-  sprintf(s,"%d | %d | %d", (int) (v2*100), (int) (v3*100), (int) (v4*100));
+  sprintf(s,"%d.%d| %d.%d |%d.%d", abs((int) (v2)),abs((int) (v2*100) - 100*((int) v2)),abs((int) (v3)),abs((int) (v3*100) - 100*((int) v3)),abs((int) (v4)),abs((int) (v4*100) - 100*((int) v4)));
   lcd.print("Battery state : ");
   lcd.setCursor(0, 1);
   lcd.print(s);  
-  mode_home = 0;
 } 
 
 void afficherPos () {
   char s[20];
   lcd.clear();
-  sprintf(s, "p1:%d p2:%d", pos1, pos2);
+  char p1[8];
+  char p2[8];
+  sprintf(p1, "G:%-6d", pos1);
+  sprintf(p2, "D:%-5d", pos2);
+  sprintf(s, "%s%s", p1, p2);
   lcd.setCursor(0, 0);
-  lcd.print("Positions : ");
+  lcd.print("  Positions : ");
   lcd.setCursor(0, 1);
   lcd.print(s);
-  mode_home = 0;
 }
+    
+

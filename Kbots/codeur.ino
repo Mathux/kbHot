@@ -8,26 +8,26 @@ int pos2 = 0;
 void change_codeur1_A() {
   if (codeur1_A) {
     codeur1_A = 0;
-    if (codeur1_B) pos1 +=1;
-    else pos1 -= 1;          
+    if (codeur1_B) pos1 -=1;
+    else pos1 += 1;          
   }
   else {
     codeur1_A = 1;
-    if (codeur1_B) pos1 -=1;
-    else pos1 += 1;
+    if (codeur1_B) pos1 +=1;
+    else pos1 -= 1;
   }
 } 
 
 void change_codeur1_B() {
   if (codeur1_B) {
     codeur1_B = 0;
-    if (codeur1_A) pos1 -=1;
-    else pos1 += 1;          
+    if (codeur1_A) pos1 +=1;
+    else pos1 -= 1;          
   }
   else {
     codeur1_B = 1;
-    if (codeur1_A) pos1 +=1;
-    else pos1 -= 1;
+    if (codeur1_A) pos1 -=1;
+    else pos1 += 1;
   }
 } 
 

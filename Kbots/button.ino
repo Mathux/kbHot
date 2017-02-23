@@ -4,7 +4,8 @@ int button () {
     motor2(50);
   }
   if(digitalRead(UI_BTN_RIGHT)==LOW){
-    afficherPos();
+    mode = mpos;
+    return 1;
   }
   if(digitalRead(UI_BTN_CENTER)==LOW) {
     int note = 400;
@@ -13,12 +14,12 @@ int button () {
   }
   if(digitalRead(UI_BTN_UP)==LOW) {
     stop_motor();
-    afficherPos();
-    return 300;
+    mode = mpos;
+    return 1;
   }
   if(digitalRead(UI_BTN_DOWN)==LOW) {
-    afficherM ();
-    return 1000;
+    mode = mbat;
+    return 1;
   } 
-  return 400;
+  return 0;
 }
