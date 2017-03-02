@@ -10,7 +10,8 @@ int button () {
   if(digitalRead(UI_BTN_CENTER)==LOW) {
     int note = 400;
     //lune(note);   
-    piece();
+    //piece();
+    while (1) {stop_motor();};
   }
   if(digitalRead(UI_BTN_UP)==LOW) {
     stop_motor();

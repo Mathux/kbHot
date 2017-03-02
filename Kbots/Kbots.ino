@@ -5,8 +5,8 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-unsigned long previousMillis_refresh = 0;
-unsigned long previousMillis_wait = 0;
+int pos1 = 0;
+int pos2 = 0;
 
 enum mode_dispo {
   mhome,
@@ -69,91 +69,14 @@ void setup(){
   menu_lcd();
 }
 
-int refresh = 700;
+
 
 void loop() {
-  //monitor ();
-  char c; 
-  while((c=Serial2.read())==-1) {
-    unsigned long currentMillis_refresh = millis();
-    unsigned long currentMillis_wait = millis();
-    
-    if (currentMillis_refresh - previousMillis_refresh >= refresh) {
-      previousMillis_refresh = currentMillis_refresh;
-      unsigned long currentMillis_wait = millis();
-      if (button()) {
-       previousMillis_wait = currentMillis_wait; 
-      }
-      if(mode!=mhome) {
-        menu_lcd();
-        if (currentMillis_wait - previousMillis_wait >= wait_menu()) {
-          mode = mhome;
-          menu_lcd();
-        }
-      }
-    }
-    else {
-     if (button()) {
-      previousMillis_wait = currentMillis_wait;
-      previousMillis_refresh = 0; // refresh direct
-     }      
-    }
+  monitor ();
+  char c = -1; 
+  if ((c=Serial2.read())!=-1) {
+    blue(c);
   }
-  static int vit = 60;
-  static int t = 1000;
-  static int v1 = 0;
-  static int v2 = 0;
-  motor1(v1);
-  motor2(v2);
-  switch (c) {
-    case 's' :
-      v1 = vit;
-      v2 = vit;
-    break;    
-    case 'l' :
-      v1 = -40;
-      v2 = 40;
-    break;
-    case 'r' :
-      v1 = 40;
-      v2 = -40;
-    break;
-    case 'd' :
-      v1 = -vit;
-      v2 = -vit;
-    break;
-    case 'm' :
-      v1 = 0;
-      v2 = 0;      
-    break;
-    case '+' :
-      if (vit+10 > 100) {
-       vit = 100; 
-      }
-      else {
-        vit = vit + 10;
-      }
-      if (v1>0) v1=vit;
-      else if (v1<0) v1=-vit;
-      if (v2>0) v2=vit;
-      else if (v2<0) v2=-vit;
-    break;
-    case '-' :
-      if (vit-10 < 0) {
-       vit = 0; 
-      }
-      else {
-        vit = vit - 10;
-      }
-      if (v1>0) v1=vit;
-      else if (v1<0) v1=-vit;
-      if (v2>0) v2=vit;
-      else if (v2<0) v2=-vit;
-    break;
-    case 'x' :
-      piece ();
-    break;
-   }
-  motor1(v1);
-  motor2(v2);
+  affiche_lcd();
+  asserv(1500,1500);
 }
