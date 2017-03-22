@@ -19,6 +19,7 @@ void afficherM ()  {
   v4 = (v4*5)/1024;
   char s[20]; 
   lcd.clear();
+  int f = 4;
   sprintf(s,"%d.%d| %d.%d |%d.%d", abs((int) (v2)),abs((int) (v2*100) - 100*((int) v2)),abs((int) (v3)),abs((int) (v3*100) - 100*((int) v3)),abs((int) (v4)),abs((int) (v4*100) - 100*((int) v4)));
   lcd.print("Battery state : ");
   lcd.setCursor(0, 1);

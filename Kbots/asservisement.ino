@@ -23,8 +23,9 @@ void asserv(int cons1, int cons2) {
     float command2 = pterm2 + iterm2 + 4;
     //motor1(20*(cons1-pos1)/360 + 8);
     //motor2(20*(cons2-pos2)/360 + 16);
-    motor1(command1);
-    motor2(command2);
+    
+    motor1(command1 < 15 ? 0 : command1);
+    motor2(command2 < 15 ? 0 : command2);
   }
    
 }

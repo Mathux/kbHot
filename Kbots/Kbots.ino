@@ -64,19 +64,55 @@ void setup(){
   attachInterrupt(4,change_codeur2_A,CHANGE);
   attachInterrupt(5,change_codeur2_B,CHANGE);
 
-
   // home
   menu_lcd();
 }
 
+unsigned long prevMillisFun = 0;
+unsigned long currentMillisFun = 0;
 
+/*
+int* f() {
+  int tab[2];
+  unsigned long t = millis ();
+  tab[0]= ;
+  tab[1]=;
+  return tab[];
+}
+*/
+
+float distance(float cal) {
+  
+  return (3200*2.02/cal - 3.37);
+}
 
 void loop() {
-  monitor ();
+  //monitor ();
   char c = -1; 
   if ((c=Serial2.read())!=-1) {
     blue(c);
   }
   affiche_lcd();
-  asserv(1500,1500);
+  //currentMillisfun = millis();
+  
+  //int *tab = f();
+  //asserv(tab[0],tab[1]);
+  
+  while (1) 
+    {
+      char s[20];
+      float read = distance (analogRead(SHARP_0));
+      
+      lcd.clear();
+
+      lcd.setCursor(0,0);
+      lcd.print("Distance :");
+      
+      sprintf(s, "  %d.%d cm", (int) read, (int) ((read - ((int) read))*100));
+      lcd.setCursor(0,1);
+      lcd.print(s);
+      
+      delay(300);
+    }
+  
 }
